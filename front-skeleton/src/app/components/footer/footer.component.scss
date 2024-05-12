@@ -1,0 +1,20 @@
+@use "theme";
+
+
+.footer {
+    color: white;
+   
+    background: linear-gradient(to right, theme.$common-purple, theme.$common-red);
+    .first{
+      height: 30vh;
+    }
+    *{
+      color: white;
+    }
+}
+.footer-b{
+  border-top: 1px solid wheat;
+  background: linear-gradient(to right, theme.$common-purple, theme.$common-red);
+  height: 50px;
+  color: white;
+}

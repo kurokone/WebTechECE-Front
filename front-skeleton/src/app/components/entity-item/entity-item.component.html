@@ -1,0 +1,107 @@
+<loader [isLoading]="isLoading" />
+<div class="container py-3" *ngIf="!isLoading">
+
+  <div class="page p-1">
+    <div class="row" *ngIf="entityName === 'movies'">
+      <div class="col-md-6">
+        <div class="entity-image d-flex justify-content-center">
+          <img [src]="(entity.posterUrl | getLink)  || 'http://placehold.it/150x400'" height="400px" />
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <h2 class="card-title mb-1">
+          <strong>{{ entity.title }}</strong>
+        </h2>
+
+        <review-box [note]="reviewData.avg" [count]="reviewData.avg" />
+
+        <p>
+          {{entity.synopsis}}
+        </p>
+        <div>
+          <strong>Director :</strong> {{ entity.director }}
+        </div>
+        <div>
+          <strong>Année publication :</strong> {{ entity.releaseDate | date:'dd/MM/yyyy' }}
+        </div>
+        <a class="btn btn-warning w-100 my-3" (click)="addReviewModal()">
+          Ajouter un avis
+        </a>
+        <a class="btn btn-primary w-100 my-3" (click)="goBack()">
+          Retour
+        </a>
+
+      </div>
+    </div>
+    <div class="row" *ngIf="entityName === 'places'">
+      <div class="col-md-6">
+        <div class="entity-image d-flex justify-content-center">
+          <img [src]="(entity.imageUrl | getLink)  || 'http://placehold.it/150x400'" height="400px" />
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <h2 class="card-title mb-1">
+          <strong>{{ entity.title }}</strong>
+        </h2>
+
+        <review-box [note]="reviewData.avg" [count]="reviewData.dataCount" />
+
+
+        <p>
+          {{entity.synopsis}}
+        </p>
+        <div>
+          <strong>Addresse :</strong> {{ entity.address }}
+        </div>
+        <div>
+          <strong>Heure d'ouverture :</strong> {{ entity.openingHours }}
+        </div>
+
+        <a class="btn btn-warning w-100 my-3" (click)="addReviewModal()">
+          Ajouter un avis
+        </a>
+        <a class="btn btn-primary w-100 my-3" (click)="goBack()">
+          Retour
+        </a>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container border p-2">
+  <div class="reviews" *ngIf="reviewData.datas.length">
+    <h2>
+      Avis des utilisateurs
+    </h2>
+    <div class="review-item card ms-3 p-3 mb-3" *ngFor="let review of reviewData.datas">
+
+      <div class="review-header">
+        <span class="review-user">{{ review.user.firstName }} {{ review.user.lastName }}</span>
+        <span> </span>
+        <span class="review-date">{{ review.createdAt | date }}</span>
+      </div>
+      <div class="review-rating">
+        Note : {{ review.rating }}/5
+      </div>
+      <review-box [note]="review.rating" />
+      <div class="review-summary">
+        Résumé : {{ review.summary }}
+      </div>
+      <div class="review-text">
+        Avis : {{ review.review }}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!reviewData.datas.length">
+    Aucun avis disponible.
+  </div>
+</div>
+
+<add-review *ngIf="addReview" [entityName]="entityType" [entity]="entity" (closeModal)="closeModal($event)" />

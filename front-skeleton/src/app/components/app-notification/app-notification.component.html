@@ -1,0 +1,6 @@
+<div *ngIf="notifications.length" class="position-fixed bottom-0 end-0 p-3" style="z-index: 222222221">
+  <div *ngFor="let notification of notifications" class="alert alert-info alert-dismissible fade show" role="alert">
+    {{ notification.message }}
+    <button type="button" class="btn-close" aria-label="Close" (click)="removeNotification(notification)"></button>
+  </div>
+</div>

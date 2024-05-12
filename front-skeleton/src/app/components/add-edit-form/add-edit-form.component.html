@@ -1,0 +1,56 @@
+<!-- add-edit-form.component.html -->
+<div class="modal" tabindex="-1" role="dialog" id="formModal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ title ? title : !entity ? 'Créer une donnée ' : 'Mise à jour' }}</h2>
+        <button type="button" class="btn-close" (click)="onCancel()"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="form" [formGroup]="form">
+          <p>
+            {{ messageError }}
+          </p>
+          <div class="mb-3" *ngFor="let name of inputs">
+            <label [for]="name" class="form-label">{{name | column}}</label>
+
+            <input *ngIf="inputType(name) === 'input'" [name]="name" type="text" class="form-control" [id]="name"
+              [formControlName]="name" placeholder="Entrez le {{name}}">
+            <input *ngIf="inputType(name) === 'file'" [name]="name" (change)="onFileSelected($event)" type="file"
+              class="form-control file-input" [id]="name" [formControlName]="name" placeholder="Entrez le {{name}}">
+            <input *ngIf="inputType(name) === 'email'" [name]="name" type="email" class="form-control" [id]="name"
+              [formControlName]="name" placeholder="Entrez le {{name}}">
+            <input *ngIf="inputType(name) === 'password'" [name]="name" type="password" class="form-control" [id]="name"
+              [formControlName]="name" placeholder="Entrez le {{name}}">
+            <input *ngIf="inputType(name) === 'date'" [name]="name" type="date" class="form-control" [id]="name"
+              [formControlName]="name" placeholder="Entrez le {{name}}">
+            <div  *ngIf="inputType(name) === 'range'">
+              <input #range (input)="updateValue(range.value)"
+                [ngStyle]="{'width': '100%'}" [name]="name" type="range" min="1" max="5" [id]="name"
+                [formControlName]="name" placeholder="Entrez le {{name}}">
+              <!-- <span *ngIf="inputType(name) === 'range'">{{currentValue}}</span> -->
+              <div class="rating d-flex justify-content-center">
+                <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star"
+                  [ngClass]="{ 'filled': star <= getCurrentValue() }">&#9733;</span>
+                <span>({{ currentValue }})</span>
+              </div>
+            </div>
+            <textarea *ngIf="inputType(name) === 'text'" [name]="name" class="form-control" [id]="name"
+              [formControlName]="name" cols="30" rows="5"></textarea>
+
+            <!-- Affichage des messages de validation -->
+            <div *ngIf="shouldShowError(name)" class="text-danger">
+              <div *ngIf="isRequiredError(name)">Le champ {{ name }} est requis.</div>
+              <div *ngIf="isEmailError(name)">Le format de l'email est incorrect.</div>
+              <!-- Ajoutez d'autres messages de validation selon vos besoins -->
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Annuler</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">{{ !entity?.id  ? 'Ajouter ' : 'Modifier'}}</button>
+      </div>
+    </div>
+  </div>
+</div>

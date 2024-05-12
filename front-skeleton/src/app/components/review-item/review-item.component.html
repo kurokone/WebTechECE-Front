@@ -1,0 +1,15 @@
+<div class="review-header">
+  <span class="review-user">{{ review.user.firstName }} {{ review.user.lastName }}</span>
+  <span> </span>
+  <span class="review-date">{{ review.createdAt | date }}</span>
+</div>
+<div class="review-rating">
+  Note : {{ review.rating }}/5
+</div>
+<review-box [note]="review.rating" />
+<div class="review-summary">
+  Résumé : {{ review.summary }}
+</div>
+<div class="review-text">
+  Avis : {{ review.review }}
+</div>

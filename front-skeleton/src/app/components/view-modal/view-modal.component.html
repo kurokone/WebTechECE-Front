@@ -1,0 +1,46 @@
+<!-- add-edit-form.component.html -->
+<div class="modal" tabindex="-1" role="dialog" id="formModal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">View Modal</h2>
+        <button type="button" class="btn-close" (click)="onCancel()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- template de votre composant -->
+        <div class="container">
+          <div class="row" *ngIf="modelEntities">
+            <div class="col">
+              <table class="table table-bordered table-striped">
+                <tbody>
+                  <tr *ngFor="let item of modelEntities">
+                    <th scope="row">{{ item | column }}</th>
+
+                    <td>
+                      <span [innerHTML]="entity[item] | displayValue:item " ></span>
+                    </td>
+                    <!--
+                      <ng-container *ngIf="item !== 'createdAt' && item !== 'releaseDate' && item !== 'imageUrl' && item !== 'posterUrl'">
+                        <td>{{ entity[item] }}</td>
+                      </ng-container>
+                      <td *ngIf="item === 'createdAt'">{{ entity[item] | date:'dd/MM/yyyy' }}</td>
+
+                      <td *ngIf="item === 'releaseDate'">{{ entity[item] | date:'dd/MM/yyyy' }}</td>
+                      <td *ngIf="item === 'imageUrl' || item === 'posterUrl'">
+                        <img width="300px" [src]="entity[item]" alt="">
+                      </td>
+                    -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

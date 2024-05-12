@@ -1,0 +1,25 @@
+<!-- add-edit-form.component.html -->
+<div class="modal" tabindex="-1" role="dialog" id="reviewModal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Avis des utilisateurs ({{ reviewData.dataCount }}) </h2>
+        <button type="button" class="btn-close" (click)="onCancel()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="reviews" *ngIf="reviewData?.datas?.length">
+          <div class="review-item card ms-3 p-3 mb-3" *ngFor="let review of reviewData?.datas">
+            <review-item [review]="review" />
+          </div>
+        </div>
+        <div *ngIf="!reviewData?.datas?.length">
+          Aucun avis disponible.
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

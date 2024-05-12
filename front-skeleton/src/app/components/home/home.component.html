@@ -1,0 +1,131 @@
+<div class="banner">
+  <div class="container">
+    <div class="jumbotron py-5">
+      <h1 class="display-4">Bienvenue sur notre site d'avis en ligne !</h1>
+      <p class="lead">Découvrez les avis sur les films, les restaurants, les produits et bien plus encore.</p>
+      <hr class="my-4">
+      <p>Commencez à explorer dès maintenant :</p>
+      <p class="lead ">
+        <a class="btn btn-success me-2 shadow-lg" routerLink="/entity/movies" role="button">Nos Films</a>
+        <a class="btn btn-primary me-2 shadow-lg" routerLink="/entity/places" role="button">Nos Lieux</a>
+        <a class="btn btn-warning shadow-lg" (click)="setStats()"  role="button">Statistiques</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+<div class="container py-3">
+
+  <!-- Section des avis populaires -->
+  <h2 class="py-2" *ngIf="!isLoading">Avis populaires ({{popularReviews.length}})  </h2>
+  <loader [isLoading]="isLoading" />
+  <div class="row" *ngIf="!isLoading">
+
+
+    <div class="col-md-9 order-2">
+      <pagination
+      [totalItems]="popularReviews.length || 0"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage" >
+
+      </pagination>
+      <div *ngIf="popularReviews.length > 0; else noReviews" class="row">
+        <div *ngFor="let review of popularReviews" class="review-card col-md-4 mb-3">
+          <div class="card shadow-lg p-1">
+            <h5>
+              <span class="badge {{ review.entityType === 'movie' ? 'text-bg-success' : 'text-bg-warning'}}">
+                {{ review.entityType === 'movie' ? 'Film' : 'Lieu' }}
+              </span>
+            </h5>
+            <a [routerLink]="[ '/entity', review.entityType+'s', review.entity.id ]">
+              <h3 class="card-title mb-1">
+                <strong>{{ review.entity.title }}</strong>
+              </h3>
+            </a>
+            <review-box [note]="review.rating" />
+
+            <div>
+              <span class="badge text-bg-success">
+                Publié le :
+                {{ review.createdAt | date:'dd/MM/Y H:MM:ss' }}
+              </span>
+            </div>
+
+            <h4>{{ review.summary }}</h4>
+            <div class="review-content">{{ review.review }}</div>
+            <button class="btn btn-primary btn-sm my-2" (click)="setReadMore(review.id)" >Lire Plus</button>
+          </div>
+        </div>
+      </div>
+      <pagination
+      [totalItems]="popularReviews.length || 0"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage" >
+
+      </pagination>
+      <ng-template #noReviews>
+        <p>Aucun avis disponible pour le moment.</p>
+      </ng-template>
+    </div>
+
+
+    <div class="col-md-3 order-1">
+      <div class="card p-2">
+        <h2>Fitrer par note</h2>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          Afficher tout
+          <input (change)="setFilterValue(6)" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          <review-box [note]="1" />
+          <input (change)="setFilterValue(1)" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          <review-box [note]="2" />
+          <input (change)="setFilterValue(2)" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          <review-box [note]="3" />
+          <input (change)="setFilterValue(3)" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          <review-box [note]="4" />
+          <input (change)="setFilterValue(4)" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          <review-box [note]="5" />
+          <input (change)="setFilterValue(5)" type="radio" name="note">
+        </div>
+
+        <h2>Fitrer par type</h2>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          Afficher tout
+          <input (change)="setFilterType('all')" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          Films
+          <input (change)="setFilterType('movie')" type="radio" name="note">
+        </div>
+        <div class="d-flex gap-2 justify-content-between border p-2 mb-1">
+          Lieux
+          <input (change)="setFilterType('place')" type="radio" name="note">
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<view-review-modal
+*ngIf="readMore"
+[id]="currentReviewId"
+(closeModal)="closeModal()"
+/>
+
+<review-stats
+*ngIf="stats"
+(closeModal)="setStats()"
+/>

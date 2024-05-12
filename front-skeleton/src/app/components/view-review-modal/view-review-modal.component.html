@@ -1,0 +1,46 @@
+<!-- add-edit-form.component.html -->
+<div class="modal" tabindex="-1" role="dialog" id="viewReviewModal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Review</h2>
+        <button type="button" class="btn-close" (click)="onCancel()"></button>
+      </div>
+      <div class="modal-body">
+        <!-- template de votre composant -->
+        <div class="container">
+          <div class="row" *ngIf="modelEntities">
+            <div class="col">
+              <table class="table table-bordered table-striped">
+                <tbody>
+                  <tr>
+                    <th scope="row">Auteur</th>
+                    <td>{{ review?.user?.lastName }} {{ review?.user?.firstName }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Avis</th>
+                    <td>{{ review?.review }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Note</th>
+                    <td>
+                      <review-box [note]="review?.rating || 0" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Date de publication</th>
+                    <td>{{ review?.createdAt | date:'dd/MM/yyyy' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

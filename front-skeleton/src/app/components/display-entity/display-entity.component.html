@@ -1,0 +1,44 @@
+<div *ngIf="entity" class="shadow p-1 border">
+  <div class="place-image">
+      <img  [src]="((entity.imageUrl || entity.posterUrl) | getLink) || 'http://placehold.it/150lieux'" width="100%" height="400px"/>
+  </div>
+  <div class="card-body">
+      <a [routerLink]="[ '/entity', type +'s', entity.id ]">
+          <h3 class="card-title mb-1">
+              <strong>{{ entity.title }}</strong>
+          </h3>
+      </a>
+
+      <div class="d-flex justify-content-center">
+        <review-box [note]="reviewData?.avg || 0" [count]="reviewData?.avg || 0" />
+
+      </div>
+
+      <div class="d-flex gap-2 py-2">
+          <button *ngIf="canAddReview" class="btn btn-primary w-100" (click)="addReview()" >
+              Noter
+          </button>
+
+          <button *ngIf="reviewData?.dataCount" class="btn btn-danger w-100" (click)="displayReview()">
+              Avis ({{ reviewData.dataCount }})
+          </button>
+      </div>
+  </div>
+</div>
+
+
+<add-review
+  *ngIf="addEditReview"
+  [entityName]="type"
+  [entity]="entity"
+  (closeModal)="closeModal($event)"
+  />
+
+  <review-list
+  *ngIf="viewReview"
+  [type]="type"
+  [entity]="entity"
+  (closeModal)="closeModal()"
+
+/>
+

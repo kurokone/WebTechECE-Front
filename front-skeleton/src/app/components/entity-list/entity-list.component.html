@@ -1,0 +1,45 @@
+<loader [isLoading]="isLoading" />
+<div class="container py-3" *ngIf="!isLoading" >
+    <h1 *ngIf="entityName === 'movies'" class="title">Films disponibles</h1>
+    <h1 *ngIf="entityName === 'places'" class="title">Lieux disponibles</h1>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Rechercher {{ entityName === 'movies' ? 'un film' : 'un lieu' }} ..." [(ngModel)]="searchTerm" (input)="filterEntities()">
+        <button class="btn btn-outline-primary" type="button" (click)="filterEntities()">Rechercher</button>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link"  (click)="previousPage()">Précédent</a>
+                </li>
+                <li class="page-item" *ngFor="let page of getPages()" [class.active]="currentPage === page">
+                    <a class="page-link"  (click)="changePage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages()">
+                    <a class="page-link"  (click)="nextPage()">Suivant</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="row justify-content">
+        <div class="col-md-3 mb-2 entity-item" *ngFor="let entity of getEntitiesForPage()">
+          <display-entity  [type]="entityName === 'movies' ? 'movie' : 'place'"  [entity]="entity" />
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link"  (click)="previousPage()">Précédent</a>
+                </li>
+                <li class="page-item" *ngFor="let page of getPages()" [class.active]="currentPage === page">
+                    <a class="page-link"  (click)="changePage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages()">
+                    <a class="page-link"  (click)="nextPage()">Suivant</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
