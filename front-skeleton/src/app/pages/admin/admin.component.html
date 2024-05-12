@@ -1,0 +1,141 @@
+<loader [isLoading]="isLoading" />
+<div class="container"*ngIf="!isLoading" >
+  <h1 class="mt-5 mb-4">Panneau d'Administration</h1>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a routerLink="/admin/movies" routerLinkActive="active" class="list-group-item list-group-item-action">
+          <i class="fas fa-film"></i>
+
+          Gérer les
+          Films</a>
+        <a routerLink="/admin/places" routerLinkActive="active" class="list-group-item list-group-item-action">
+          <i class="fas fa-location-dot"></i>
+
+          Gérer les
+          Lieux</a>
+
+        <a routerLink="/admin/users" routerLinkActive="active" class="list-group-item list-group-item-action">
+          <i class="fas fa-user"></i>
+          Gérer les
+          Utilisateurs</a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Rechercher {{ entityName === 'movies' ? 'un film' : entityName === 'places' ? 'un lieu' : 'un utilisateur' }} ..." [(ngModel)]="searchTerm" (input)="filterEntities()">
+        <button class="btn btn-outline-primary" type="button" (click)="filterEntities()">Rechercher</button>
+    </div>
+      <div class="d-flex mb-2">
+        <button class="btn btn-primary" (click)="addItem()">
+          <i class="fas fa-plus"></i>
+          Ajouter
+        </button>
+      </div>
+      <div class="d-flex justify-content-between" *ngIf="entityData.length">
+        <pagination
+        [totalItems]="entityAllData.length || 0"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage" >
+
+        </pagination>
+
+
+
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fas fa-table-columns"></i>
+            Colonnes
+          </button>
+          <ul class="dropdown-menu">
+            <li *ngFor="let column of modelEntities">
+              <span class="dropdown-item"  >
+                <div class="form-check form-switch">
+                  <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="isChecked(column)"
+                  (change)="showColumnSelectionCard($event, column)"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckChecked">{{ column| column }}</label>
+                </div>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p *ngIf="!entityData.length">
+        Aucune données dispobibles !
+      </p>
+
+      <div class="" *ngIf="entityData.length">
+        <div class="table-responsive" *ngIf="entityData && tableHeader">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th *ngFor="let header of tableHeader">{{ header | column}}</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of entityData">
+                <td *ngFor="let key of tableHeader">
+                  <span [innerHTML]="item[key] | displayValue:key"> </span>
+                </td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-success" (click)="viewItem(item)">
+                      <i class="fas fa-eye"></i>
+                      Voir
+                    </button>
+                    <button class="btn btn-primary" (click)="editItem(item)">
+                      <i class="fas fa-edit"></i>
+                      Modifier</button>
+                    <button class="btn btn-danger" (click)="deleteItem(item)">
+                      <i class="fas fa-trash"></i>
+                      Supprimer</button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+        </div>
+        <div class="alert alert-info" *ngIf="!entityData">Aucune donnée à afficher.</div>
+      </div>
+      <div class="d-flex justify-content-between" *ngIf="entityData.length">
+        <pagination [totalItems]="entityAllData.length || 0" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage" >
+
+        </pagination>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<add-edit-form
+  *ngIf="addData || (updateData && currentData)"
+  [entityName]="entityName"
+  [model]="entityData[0]"
+  [entity]="currentData"
+  (closeModal)="closeModal($event)"
+/>
+<confirm-modal
+*ngIf="deleteData && currentData"
+[entityName]="entityName"
+[model]="entityData[0]"
+[entity]="currentData"
+(closeModal)="closeModal($event)"
+/>
+
+<view-modal
+*ngIf="viewData"
+[entity]="currentData"
+(closeModal)="closeModal($event)"
+/>
