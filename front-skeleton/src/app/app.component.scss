@@ -1,0 +1,30 @@
+@use "theme";
+
+
+.page-container{
+    min-height: 70vh;
+}
+
+header{
+  background: linear-gradient(to right, theme.$common-purple, theme.$common-red);
+}
+.color-primary{
+  background: linear-gradient(to right, theme.$common-purple, theme.$common-red);
+}
+
+.card-text{
+  white-space: nowrap;
+  // height: 80px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+.rating{
+  padding: 7px;
+  cursor: pointer;
+}
+.movie-image span img{
+  width: 100% !important;
+}
+.movie-item .btn{
+  // border-radius: 0;
+}
